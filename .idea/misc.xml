@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="InstructionScreen" method="draw" />
+    <pattern value="FinalProject" />
+    <pattern value="Game" />
+    <pattern value="GameObject" />
+    <pattern value="Game" method="gameSetupMenu" />
+    <pattern value="Jumper" method="getVx" />
+    <pattern value="GameObject" method="getWidth" />
+    <pattern value="GameObject" method="getX" />
+    <pattern value="InstructionScreen" />
+    <pattern value="InstructionScreen" method="InstructionScreen" />
+    <pattern value="Jumper" method="isOnLevel" />
+    <pattern value="Jumper" />
+    <pattern value="FinalProject" method="main" />
+    <pattern value="Game" method="main" />
+    <pattern value="GameObject" method="ObjectType" />
+    <pattern value="GameObject" method="setX" />
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="corretto-1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

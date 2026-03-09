@@ -33,7 +33,7 @@ function App() {
     let loadedCount = 0;
     filenames.forEach((fname) => {
       const img = new Image();
-      img.src = `/${fname}`;
+      img.src = `${import.meta.env.BASE_URL}${fname}`;
       img.onload = () => {
         loadedCount++;
         images.current[fname] = img;

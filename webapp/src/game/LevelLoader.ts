@@ -14,7 +14,7 @@ export class LevelLoader {
         let startY2 = 468;
 
         try {
-            const response = await fetch(`/assets/levels/${levelName}`);
+            const response = await fetch(`${import.meta.env.BASE_URL}assets/levels/${levelName}`);
             const text = await response.text();
             const lines = text.split('\n');
 

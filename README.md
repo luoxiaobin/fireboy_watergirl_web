@@ -1,6 +1,13 @@
-# FinalProject
+# FinalProject / Fireboy & Watergirl
 
-## This is Ivy Luo ICS3U6's final project assignment
+![Modern Web Edition](https://img.shields.io/badge/Version-Web_Edition_Live-success)
+**🎮 Play the modern web version here: [Fireboy & Watergirl Web](https://luoxiaobin.github.io/fireboy_watergirl_web/)**
+
+> **Note:** The original Java Swing codebase in `src/main/java` has been retired. The game has been completely modernized and rebuilt as a responsive web application in TypeScript and React. All active development and documentation can now be found in the [`webapp/`](./webapp) directory.
+
+---
+
+## Original Java Swing Project (Ivy Luo ICS3U6's final project assignment)
 
 
 This platform game requires two players, one using the arrow keys to control their character, the other using the keys ‘a’, ‘w’, ‘s’, and ‘d’. The two characters must overcome obstacles to reach the two doors for them to complete each level. The users will interact with the program through the keyboard to move their characters and the mouse/touchpad to start a new level. This program will also require a text file for every level, which will hold the layout and must be converted to different objects using a method.

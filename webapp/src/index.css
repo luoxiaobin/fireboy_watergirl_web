@@ -1,0 +1,218 @@
+:root {
+  --primary: #ff4757;
+  --secondary: #1e90ff;
+  --bg-color: #0f111a;
+  --panel-bg: rgba(255, 255, 255, 0.05);
+  --text-main: #f1f2f6;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+  /* Prevent scrolling on mobile */
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 1024px;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--panel-bg);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+}
+
+.switch-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.switch-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.active-firegirl {
+  background: var(--primary);
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+}
+
+.active-firegirl:hover {
+  background: #ff6b81;
+}
+
+.active-waterboy {
+  background: var(--secondary);
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.4);
+}
+
+.active-waterboy:hover {
+  background: #70a1ff;
+}
+
+.canvas-wrapper {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #000;
+  aspect-ratio: 1024/568;
+  width: 100%;
+  max-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.overlay-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 24px 48px;
+  border-radius: 16px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  z-index: 10;
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Mobile Controls */
+.mobile-controls {
+  display: none;
+  /* hidden on desktop */
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px 20px;
+  margin-top: auto;
+}
+
+.dpad {
+  display: flex;
+  gap: 15px;
+}
+
+.ctrl-btn {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  /* prevents default touch behavior like zoom/scroll */
+}
+
+.ctrl-btn:active {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0.95);
+}
+
+.action {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .game-container {
+    padding: 0;
+    gap: 0;
+    justify-content: flex-start;
+  }
+
+  .canvas-wrapper {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    max-height: 50vh;
+    /* leave room for controls */
+  }
+
+  .mobile-controls {
+    display: flex;
+  }
+}

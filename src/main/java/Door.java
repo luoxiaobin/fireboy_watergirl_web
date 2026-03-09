@@ -1,3 +1,4 @@
+// OBSOLETE CODE - REFERENCE ONLY (See webapp directory for active code)
 import java.awt.*;
 
 public class Door extends GameObject {

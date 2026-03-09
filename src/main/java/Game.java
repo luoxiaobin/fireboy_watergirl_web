@@ -1,3 +1,4 @@
+// OBSOLETE CODE - REFERENCE ONLY (See webapp directory for active code)
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;

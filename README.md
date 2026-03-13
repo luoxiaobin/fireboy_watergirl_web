@@ -1,39 +1,98 @@
-# FinalProject / Fireboy & Watergirl
+# 🔥💧 Fireboy & Watergirl — Web Edition
 
-![Modern Web Edition](https://img.shields.io/badge/Version-Web_Edition_Live-success)
-**🎮 Play the modern web version here: [Fireboy & Watergirl Web](https://luoxiaobin.github.io/fireboy_watergirl_web/)**
+![Live](https://img.shields.io/badge/Status-Live-success)
+![TypeScript](https://img.shields.io/badge/TypeScript-React-blue)
+![CI](https://img.shields.io/badge/CI-GitHub_Actions-brightgreen)
 
-> **Note:** The original Java Swing codebase in `src/main/java` has been retired. The game has been completely modernized and rebuilt as a responsive web application in TypeScript and React. All active development and documentation can now be found in the [`webapp/`](./webapp) directory.
+**🎮 [Play Now → luoxiaobin.github.io/fireboy_watergirl_web](https://luoxiaobin.github.io/fireboy_watergirl_web/)**
+
+The classic Fireboy & Watergirl co-op platformer, completely modernized as a responsive web application built with TypeScript, React, and HTML5 Canvas.
+
+<p align="center">
+  <img src="promo/infographic.png" alt="Game Infographic" width="320" />
+</p>
 
 ---
 
-## Original Java Swing Project (Ivy Luo ICS3U6's final project assignment)
+## ✨ Features
 
+| Feature | Description |
+|---------|-------------|
+| 🎮 **Dual Character Control** | Play as Firegirl (Arrow Keys) or Fireboy (WASD) — switch between characters with one click |
+| 🌐 **Play Anywhere** | Works on desktop browsers and mobile phones |
+| 📱 **Mobile Optimized** | Touch controls, fullscreen mode, landscape orientation lock, iPhone notch handling |
+| 🔊 **Immersive Audio** | Procedurally synthesized sound effects (jump, land, win, lose) — no external audio files needed |
+| 🎵 **Background Music** | Ambient procedural drone using detuned oscillators with LFO modulation |
+| ⚙️ **Settings Panel** | Volume slider, SFX toggle, music toggle — all preferences saved to localStorage |
+| 💾 **Auto-Save Progress** | Your level progress is saved automatically — pick up where you left off |
+| ✨ **Particle Effects** | Dust particles on jump & land for added visual polish |
+| 🎨 **Premium UI** | Glassmorphic dark-mode design with smooth CSS transitions and loading animations |
+| 🔄 **CI/CD** | GitHub Actions for automated builds & linting, deployed to GitHub Pages |
 
-This platform game requires two players, one using the arrow keys to control their character, the other using the keys ‘a’, ‘w’, ‘s’, and ‘d’. The two characters must overcome obstacles to reach the two doors for them to complete each level. The users will interact with the program through the keyboard to move their characters and the mouse/touchpad to start a new level. This program will also require a text file for every level, which will hold the layout and must be converted to different objects using a method.
+## 🛠️ Tech Stack
 
-Possible classes that will be created:
-- Character class → creates the two characters that will play the game
-- Level class → creates different levels of the game
-- Objects class → creates all the objects that will be the obstacles for the game (possibly a child class for every object, e.g. platform, green goo, door, etc…)
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Canvas**: HTML5 Canvas for game rendering
+- **Audio**: Web Audio API (`AudioContext`) for procedural sound synthesis
+- **Styling**: Vanilla CSS with glassmorphism, gradients, and micro-animations
+- **Hosting**: GitHub Pages via `gh-pages`
+- **CI**: GitHub Actions (Node 18.x & 20.x)
 
+## 🚀 Getting Started
 
-Possible methods that will be created:
-- setUp() → Set up the game window
-- setUpGameObjects() → Set up all the objects from the text file to the window
-- runGameLoop() → Runs while the user is playing a level
-- keyPressed() and keyReleased() → Controls the character’s movement corresponding to the keyboard input
-- moveX() and move(Y) → Moves the character’s location
+```bash
+# Clone the repo
+git clone https://github.com/luoxiaobin/fireboy_watergirl_web.git
+cd fireboy_watergirl_web/webapp
 
-Possible challenges:
-- Creating a text file for the layout of the game and converting it into objects for the game
-- Moving the character when the user presses two keys at once (e.g. upon pressing up and right, they should jump while moving right)
+# Install dependencies
+npm install
 
-Realistic timeline:
-- Monday, Jan 17th: Complete methods for the character’s movement
-- Wednesday, Jan 21st: Finish creating all objects for at least one level and connecting the text file to the layout
-- Friday, Jan 23rd: Have two characters that can play simultaneously and finish the graphics for all obstacles
-- Sunday, Jan 25th: Create text files for all the levels, a start game button, and connecting one level to another
+# Start the dev server
+npm run dev
+```
 
+## 📁 Project Structure
 
+```
+fireboy_watergirl_web/
+├── .github/workflows/ci.yml    # GitHub Actions CI
+├── promo/                      # Promotional materials
+│   ├── infographic.png         # Feature infographic
+│   ├── intro_demo.webp         # Gameplay demo video
+│   └── gameplay_screenshot.png # In-game screenshot
+└── webapp/                     # Web application
+    ├── src/
+    │   ├── game/               # Game engine, physics, audio
+    │   │   ├── GameEngine.ts   # Core physics & collision engine
+    │   │   ├── AudioEngine.ts  # Procedural audio synthesis
+    │   │   ├── ParticleSystem.ts # Particle effects
+    │   │   ├── Jumper.ts       # Character class
+    │   │   ├── LevelLoader.ts  # Level file parser
+    │   │   └── constants.ts    # Game constants
+    │   ├── hooks/              # React hooks
+    │   │   ├── useGameAssets.ts # Asset loading
+    │   │   ├── useGameControls.ts # Keyboard & touch input
+    │   │   ├── useGameLoop.ts  # Fixed-step game loop
+    │   │   └── useFullscreen.ts # Fullscreen & orientation
+    │   ├── App.tsx             # Main application component
+    │   └── index.css           # Global styles & design system
+    └── public/                 # Static assets (sprites, levels)
+```
 
+## 🎬 Promotional Materials
+
+Promotional assets are available in the [`promo/`](./promo) directory:
+
+- **Infographic** (`infographic.png`) — Social media–ready vertical graphic
+- **Demo Video** (`intro_demo.webp`) — Recorded gameplay walkthrough
+- **Screenshot** (`gameplay_screenshot.png`) — In-game action shot
+
+## 📜 History
+
+This project originated as a Java Swing application for an ICS3U6 final project. It has since been completely rebuilt as a modern web application with responsive design, procedural audio, and mobile support.
+
+## 📝 License
+
+This project is for educational purposes.

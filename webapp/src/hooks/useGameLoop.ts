@@ -35,6 +35,8 @@ export function useGameLoop(
       // Fixed timestep update
       while (accumulator >= Const.FRAME_PERIOD) {
         engine.tick();
+        // The game logic expects delta time in seconds, so we convert the 20ms fixed step
+        engine.particleEngine.update(Const.FRAME_PERIOD / 1000); 
         accumulator -= Const.FRAME_PERIOD;
       }
 
@@ -81,6 +83,9 @@ export function useGameLoop(
         engine.waterboy.x,
         engine.waterboy.y
       );
+
+      // Draw particles on top of characters but behind UI
+      engine.particleEngine.draw(ctx);
 
       animationFrameId = requestAnimationFrame(loop);
     };

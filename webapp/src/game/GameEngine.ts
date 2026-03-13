@@ -1,6 +1,8 @@
 import { Jumper } from "./Jumper";
 import { Platform, GreenGoo, Door, MovingPlatform } from "./models";
 import { Const } from "./constants";
+import { AudioEngine } from "./AudioEngine";
+import { ParticleEngine } from "./ParticleSystem";
 
 export class GameEngine {
     firegirl: Jumper;
@@ -9,6 +11,7 @@ export class GameEngine {
     greenGooList: GreenGoo[] = [];
     doorList: Door[] = [];
     movingPlatformList: MovingPlatform[] = [];
+    particleEngine: ParticleEngine = new ParticleEngine();
 
     gameStatus: "playing" | "Won" | "Lost" = "playing";
 
@@ -72,6 +75,7 @@ export class GameEngine {
         // Win Condition
         for (const door of this.doorList) {
             if (this.firegirl.collides(door) && this.waterboy.collides(door)) {
+                if (this.gameStatus !== "Won") AudioEngine.playWin();
                 this.gameStatus = "Won";
                 this.stopCharacters();
             }
@@ -80,6 +84,7 @@ export class GameEngine {
         // Lose Condition
         for (const goo of this.greenGooList) {
             if (this.firegirl.collides(goo) || this.waterboy.collides(goo)) {
+                if (this.gameStatus !== "Lost") AudioEngine.playLose();
                 this.gameStatus = "Lost";
                 this.stopCharacters();
             }
@@ -101,6 +106,10 @@ export class GameEngine {
     private checkMovingPlatformCollisionY(char: Jumper, mp: MovingPlatform) {
         if (char.vy > 0 && char.collides(mp)) {
             char.y = mp.y - char.height;
+            if (!char.isOnMovingPlatform) {
+                AudioEngine.playLand();
+                this.particleEngine.spawnDust(char.x, char.y + char.height, char.width, 10);
+            }
             char.setOnMovingPlatform(mp);
         } else if (char.vy < 0 && char.collides(mp)) {
             char.y = mp.y + mp.height;
@@ -112,6 +121,10 @@ export class GameEngine {
     private checkPlatformCollisionY(char: Jumper, p: Platform) {
         if (char.vy > 0 && char.collides(p)) {
             char.y = p.y - char.height;
+            if (char.vy > 0) {
+                AudioEngine.playLand();
+                this.particleEngine.spawnDust(char.x, char.y + char.height, char.width, 10);
+            }
             char.vy = 0;
             char.unsetOnMovingPlatform();
         } else if (char.vy < 0 && char.collides(p)) {

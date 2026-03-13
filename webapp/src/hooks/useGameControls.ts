@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { GameEngine } from "../game/GameEngine";
 import { Const } from "../game/constants";
+import { AudioEngine } from "../game/AudioEngine";
 
 export function useGameControls(
   engine: GameEngine | null,
@@ -11,6 +12,7 @@ export function useGameControls(
     if (!engine) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      AudioEngine.init(); // Init audio context on first user interaction
       const isFiregirlActive = activeCharacter === "firegirl";
       const isWaterboyActive = activeCharacter === "waterboy";
 
@@ -23,6 +25,7 @@ export function useGameControls(
           (isFiregirlActive || e.code === "ArrowUp") &&
           (firegirl.vy === 0 || firegirl.isOnMovingPlatform)
         ) {
+          AudioEngine.playJump();
           firegirl.vy = Const.JUMP_SPEED + firegirl.getMovingPlatformVy();
           firegirl.unsetOnMovingPlatform();
         }
@@ -46,6 +49,7 @@ export function useGameControls(
           (isWaterboyActive || e.key.toLowerCase() === "w") &&
           (waterboy.vy === 0 || waterboy.isOnMovingPlatform)
         ) {
+          AudioEngine.playJump();
           waterboy.vy = Const.JUMP_SPEED + waterboy.getMovingPlatformVy();
           waterboy.unsetOnMovingPlatform();
         }
@@ -84,6 +88,7 @@ export function useGameControls(
 
   // Touch Control Handlers
   const handleTouchStart = (action: "left" | "right" | "jump") => {
+    AudioEngine.init();
     if (!engine) return;
     const char =
       activeCharacter === "firegirl" ? engine.firegirl : engine.waterboy;
@@ -91,6 +96,7 @@ export function useGameControls(
     if (action === "left") char.vx = -Const.RUN_SPEED;
     if (action === "right") char.vx = Const.RUN_SPEED;
     if (action === "jump" && (char.vy === 0 || char.isOnMovingPlatform)) {
+      AudioEngine.playJump();
       char.vy = Const.JUMP_SPEED + char.getMovingPlatformVy();
       char.unsetOnMovingPlatform();
     }

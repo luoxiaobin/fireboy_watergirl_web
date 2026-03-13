@@ -97,13 +97,22 @@ function App() {
       </div>
 
       <div className="canvas-wrapper">
-        {!imagesLoaded && <div className="overlay-msg">Loading Assets...</div>}
+        {/* Loading Spinner */}
+        {!imagesLoaded && (
+          <div className="overlay-msg loading-overlay">
+            <div className="spinner"></div>
+            <span>Loading Assets...</span>
+          </div>
+        )}
+
+        {/* Level Transition Message */}
         {gameMessage && <div className="overlay-msg">{gameMessage}</div>}
+
         <canvas
           ref={canvasRef}
           width={Const.WIDTH}
           height={Const.HEIGHT}
-          className="game-canvas"
+          className={`game-canvas ${(!imagesLoaded || gameMessage) ? 'canvas-dimmed' : ''}`}
         />
       </div>
 

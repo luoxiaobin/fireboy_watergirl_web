@@ -31,29 +31,42 @@ export class GameEngine {
     tick() {
         if (this.gameStatus !== "playing") return;
 
-        // Movement resolution
-        this.firegirl.accelerate();
+        // X Movement
         this.firegirl.moveX();
+        this.waterboy.moveX();
+
+        // X Collisions (Static and Moving Platforms)
+        for (const p of this.platformList) {
+            this.checkPlatformCollisionX(this.firegirl, p);
+            this.checkPlatformCollisionX(this.waterboy, p);
+        }
+        for (const mp of this.movingPlatformList) {
+            this.checkPlatformCollisionX(this.firegirl, mp);
+            this.checkPlatformCollisionX(this.waterboy, mp);
+        }
+
+        // Y Movement (Gravity / Jumping)
+        this.firegirl.accelerate();
         this.firegirl.moveY(Const.GROUND);
 
         this.waterboy.accelerate();
-        this.waterboy.moveX();
         this.waterboy.moveY(Const.GROUND);
 
+        // Update Moving Platforms
         for (const mp of this.movingPlatformList) {
             mp.move();
         }
 
-        // Moving Platform Collisions
+        // Y Collisions (Moving Platforms)
         for (const mp of this.movingPlatformList) {
-            this.checkMovingPlatformCollision(this.firegirl, mp);
-            this.checkMovingPlatformCollision(this.waterboy, mp);
+            this.checkMovingPlatformCollisionY(this.firegirl, mp);
+            this.checkMovingPlatformCollisionY(this.waterboy, mp);
         }
 
-        // Static Platform Collisions
+        // Y Collisions (Static Platforms)
         for (const p of this.platformList) {
-            this.checkPlatformCollision(this.firegirl, p);
-            this.checkPlatformCollision(this.waterboy, p);
+            this.checkPlatformCollisionY(this.firegirl, p);
+            this.checkPlatformCollisionY(this.waterboy, p);
         }
 
         // Win Condition
@@ -73,17 +86,30 @@ export class GameEngine {
         }
     }
 
-    private checkMovingPlatformCollision(char: Jumper, mp: MovingPlatform) {
+    private checkPlatformCollisionX(char: Jumper, p: Platform | MovingPlatform) {
+        if (char.collides(p)) {
+            if (char.vx > 0) {
+                // Moving right, hit left edge
+                char.x = p.x - char.width;
+            } else if (char.vx < 0) {
+                // Moving left, hit right edge
+                char.x = p.x + p.width;
+            }
+        }
+    }
+
+    private checkMovingPlatformCollisionY(char: Jumper, mp: MovingPlatform) {
         if (char.vy > 0 && char.collides(mp)) {
             char.y = mp.y - char.height;
             char.setOnMovingPlatform(mp);
         } else if (char.vy < 0 && char.collides(mp)) {
-            char.y = mp.y - char.height;
-            char.setOnMovingPlatform(mp);
+            char.y = mp.y + mp.height;
+            char.vy = 0;
+            char.unsetOnMovingPlatform();
         }
     }
 
-    private checkPlatformCollision(char: Jumper, p: Platform) {
+    private checkPlatformCollisionY(char: Jumper, p: Platform) {
         if (char.vy > 0 && char.collides(p)) {
             char.y = p.y - char.height;
             char.vy = 0;

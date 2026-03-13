@@ -6,6 +6,7 @@ import { Const } from "./game/constants";
 import { useGameAssets } from "./hooks/useGameAssets";
 import { useGameControls } from "./hooks/useGameControls";
 import { useGameLoop } from "./hooks/useGameLoop";
+import { useFullscreen } from "./hooks/useFullscreen";
 
 declare const __BUILD_DATE__: string;
 
@@ -17,6 +18,21 @@ function App() {
   >("firegirl");
   const [level, setLevel] = useState(1);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
+  const [isPortrait, setIsPortrait] = useState(false);
+
+  // Fullscreen
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
+
+  // Detect portrait orientation on mobile
+  useEffect(() => {
+    const checkOrientation = () => {
+      const isMobile = window.innerWidth <= 768;
+      setIsPortrait(isMobile && window.innerHeight > window.innerWidth);
+    };
+    checkOrientation();
+    window.addEventListener("resize", checkOrientation);
+    return () => window.removeEventListener("resize", checkOrientation);
+  }, []);
 
   // 1. Assets
   const { imagesLoaded, imagesRef } = useGameAssets();
@@ -76,8 +92,19 @@ function App() {
 
   return (
     <div className="game-container">
+      {/* Portrait Rotation Prompt */}
+      {isPortrait && (
+        <div className="rotate-prompt">
+          <div className="rotate-icon">📱</div>
+          <span>Rotate your device to landscape for the best experience</span>
+          <button className="switch-btn" onClick={toggleFullscreen}>
+            Go Fullscreen
+          </button>
+        </div>
+      )}
+
       <div className="header">
-        <h1>Fireboy & Watergirl</h1>
+        <h1>Fireboy &amp; Watergirl</h1>
         <div className="controls">
           <button
             className={`switch-btn ${
@@ -94,6 +121,13 @@ function App() {
             onClick={() => setActiveCharacter("waterboy")}
           >
             Play as Fireboy
+          </button>
+          <button
+            className="switch-btn fullscreen-btn"
+            onClick={toggleFullscreen}
+            title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          >
+            {isFullscreen ? "⛶" : "⛶"}
           </button>
         </div>
       </div>
@@ -134,9 +168,9 @@ function App() {
               e.preventDefault();
               handleTouchEnd("left");
             }}
-            className="ctrl-btn"
+            className="ctrl-btn ctrl-left"
           >
-            &larr;
+            ◀
           </button>
           <button
             onPointerDown={(e) => {
@@ -151,9 +185,9 @@ function App() {
               e.preventDefault();
               handleTouchEnd("right");
             }}
-            className="ctrl-btn"
+            className="ctrl-btn ctrl-right"
           >
-            &rarr;
+            ▶
           </button>
         </div>
         <div className="action">
@@ -164,7 +198,7 @@ function App() {
             }}
             className="ctrl-btn jump-btn"
           >
-            &uarr;
+            ▲
           </button>
         </div>
       </div>

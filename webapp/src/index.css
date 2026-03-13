@@ -290,6 +290,63 @@ body {
   min-width: unset;
 }
 
+/* === iOS Add to Home Screen Prompt === */
+.ios-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.ios-prompt {
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 360px;
+  text-align: left;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ios-prompt h2 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ios-prompt p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.ios-prompt ol {
+  padding-left: 20px;
+  margin-bottom: 24px;
+}
+
+.ios-prompt li {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+}
+
+.ios-prompt button {
+  width: 100%;
+  text-align: center;
+}
+
 /* === Rotate Device Prompt === */
 .rotate-prompt {
   position: fixed;

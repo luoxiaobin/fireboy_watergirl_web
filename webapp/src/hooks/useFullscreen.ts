@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 
+// Detect iOS (iPhone/iPad/iPod)
+const getIsIOS = () =>
+  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
 export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+  const isIOS = getIsIOS();
 
   useEffect(() => {
     const onChange = () => {
@@ -16,15 +23,20 @@ export function useFullscreen() {
   }, []);
 
   const toggleFullscreen = useCallback(async () => {
+    // iOS Safari doesn't support the Fullscreen API
+    if (isIOS) {
+      setShowIOSPrompt(true);
+      return;
+    }
+
     try {
       if (!document.fullscreenElement) {
         await document.documentElement.requestFullscreen();
-        // Attempt landscape lock (fails gracefully on unsupported browsers)
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           await (screen.orientation as any).lock("landscape");
         } catch {
-          // Orientation lock not supported — that's fine
+          // Orientation lock not supported
         }
       } else {
         await document.exitFullscreen();
@@ -37,7 +49,12 @@ export function useFullscreen() {
     } catch {
       // Fullscreen not supported
     }
+  }, [isIOS]);
+
+  const dismissIOSPrompt = useCallback(() => {
+    setShowIOSPrompt(false);
   }, []);
 
-  return { isFullscreen, toggleFullscreen };
+  return { isFullscreen, toggleFullscreen, isIOS, showIOSPrompt, dismissIOSPrompt };
 }
+

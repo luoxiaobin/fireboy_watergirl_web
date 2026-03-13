@@ -21,7 +21,7 @@ function App() {
   const [isPortrait, setIsPortrait] = useState(false);
 
   // Fullscreen
-  const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { isFullscreen, toggleFullscreen, showIOSPrompt, dismissIOSPrompt } = useFullscreen();
 
   // Detect portrait orientation on mobile
   useEffect(() => {
@@ -100,6 +100,24 @@ function App() {
           <button className="switch-btn" onClick={toggleFullscreen}>
             Go Fullscreen
           </button>
+        </div>
+      )}
+
+      {/* iOS Add to Home Screen Prompt */}
+      {showIOSPrompt && (
+        <div className="ios-prompt-overlay" onClick={dismissIOSPrompt}>
+          <div className="ios-prompt" onClick={(e) => e.stopPropagation()}>
+            <h2>Add to Home Screen</h2>
+            <p>Safari doesn't support fullscreen mode. For the best experience:</p>
+            <ol>
+              <li>Tap the <strong>Share</strong> button (⬆️) in Safari</li>
+              <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+              <li>Open the app from your Home Screen — it will run fullscreen!</li>
+            </ol>
+            <button className="switch-btn active-firegirl" onClick={dismissIOSPrompt}>
+              Got it!
+            </button>
+          </div>
         </div>
       )}
 

@@ -17,6 +17,7 @@ export class AudioEngine {
   // Must be called on first user interaction (e.g. clicking a button)
   public static init() {
     if (!this.ctx) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.value = this.isMuted ? 0 : 0.5;

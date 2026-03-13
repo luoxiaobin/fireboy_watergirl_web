@@ -8,10 +8,10 @@ export class LevelLoader {
         const doorList: Door[] = [];
         const movingPlatformList: MovingPlatform[] = [];
 
-        let startX1 = 50;
-        let startY1 = 468;
-        let startX2 = 250;
-        let startY2 = 468;
+        const startX1 = 50;
+        const startY1 = 468;
+        const startX2 = 250;
+        const startY2 = 468;
 
         try {
             const response = await fetch(`${import.meta.env.BASE_URL}assets/levels/${levelName}`);

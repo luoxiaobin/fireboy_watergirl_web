@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { GameEngine } from "./game/GameEngine";
 import { LevelLoader } from "./game/LevelLoader";
 import { Jumper } from "./game/Jumper";
 import { Const } from "./game/constants";
+import { AudioEngine } from "./game/AudioEngine";
 import { useGameAssets } from "./hooks/useGameAssets";
 import { useGameControls } from "./hooks/useGameControls";
 import { useGameLoop } from "./hooks/useGameLoop";
@@ -10,18 +11,49 @@ import { useFullscreen } from "./hooks/useFullscreen";
 
 declare const __BUILD_DATE__: string;
 
+// Load saved level from localStorage
+function getSavedLevel(): number {
+  try {
+    const saved = localStorage.getItem("fbwg_level");
+    if (saved) {
+      const lvl = parseInt(saved, 10);
+      if (lvl >= 1 && lvl <= 3) return lvl;
+    }
+  } catch {
+    // Ignore
+  }
+  return 1;
+}
+
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [engine, setEngine] = useState<GameEngine | null>(null);
   const [activeCharacter, setActiveCharacter] = useState<
     "firegirl" | "waterboy"
   >("firegirl");
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(getSavedLevel);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
   const [isPortrait, setIsPortrait] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [volume, setVolume] = useState(AudioEngine.getVolume());
+  const [isMuted, setIsMuted] = useState(AudioEngine.getMuted());
+  const [musicEnabled, setMusicEnabled] = useState(AudioEngine.getMusicEnabled());
 
   // Fullscreen
   const { isFullscreen, toggleFullscreen, showIOSPrompt, dismissIOSPrompt } = useFullscreen();
+
+  // Save level progress whenever it changes
+  const setLevelAndSave = useCallback((newLevel: number | ((prev: number) => number)) => {
+    setLevel((prev) => {
+      const nextLevel = typeof newLevel === "function" ? newLevel(prev) : newLevel;
+      try {
+        localStorage.setItem("fbwg_level", String(nextLevel));
+      } catch {
+        // Ignore
+      }
+      return nextLevel;
+    });
+  }, []);
 
   // Detect portrait orientation on mobile
   useEffect(() => {
@@ -80,7 +112,7 @@ function App() {
     canvasRef,
     imagesRef,
     level,
-    setLevel,
+    setLevelAndSave,
     setGameMessage
   );
 
@@ -89,6 +121,24 @@ function App() {
     engine,
     activeCharacter
   );
+
+  // Settings handlers
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    AudioEngine.setVolume(val);
+    setVolume(val);
+  };
+
+  const handleMuteToggle = () => {
+    AudioEngine.toggleMute();
+    setIsMuted(AudioEngine.getMuted());
+  };
+
+  const handleMusicToggle = () => {
+    const newVal = !musicEnabled;
+    AudioEngine.setMusicEnabled(newVal);
+    setMusicEnabled(newVal);
+  };
 
   return (
     <div className="game-container">
@@ -121,6 +171,57 @@ function App() {
         </div>
       )}
 
+      {/* Settings Panel */}
+      {showSettings && (
+        <div className="settings-overlay" onClick={() => setShowSettings(false)}>
+          <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
+            <h2>⚙️ Settings</h2>
+
+            <div className="setting-row">
+              <label>Volume</label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={volume}
+                onChange={handleVolumeChange}
+                className="volume-slider"
+              />
+              <span className="volume-value">{Math.round(volume * 100)}%</span>
+            </div>
+
+            <div className="setting-row">
+              <label>Sound Effects</label>
+              <button
+                className={`setting-toggle ${!isMuted ? "toggle-on" : ""}`}
+                onClick={handleMuteToggle}
+              >
+                {isMuted ? "OFF" : "ON"}
+              </button>
+            </div>
+
+            <div className="setting-row">
+              <label>Background Music</label>
+              <button
+                className={`setting-toggle ${musicEnabled ? "toggle-on" : ""}`}
+                onClick={handleMusicToggle}
+              >
+                {musicEnabled ? "ON" : "OFF"}
+              </button>
+            </div>
+
+            <button
+              className="switch-btn active-firegirl"
+              onClick={() => setShowSettings(false)}
+              style={{ width: "100%", marginTop: "16px" }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="header">
         <h1>Fireboy &amp; Watergirl</h1>
         <div className="controls">
@@ -146,6 +247,13 @@ function App() {
             title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
           >
             {isFullscreen ? "⛶" : "⛶"}
+          </button>
+          <button
+            className="switch-btn fullscreen-btn"
+            onClick={() => setShowSettings(true)}
+            title="Settings"
+          >
+            ⚙️
           </button>
         </div>
       </div>

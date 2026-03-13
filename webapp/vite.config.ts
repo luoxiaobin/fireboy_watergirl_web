@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/fireboy_watergirl_web/',
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toLocaleString()),
+  },
 })

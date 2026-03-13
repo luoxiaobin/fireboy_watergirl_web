@@ -280,3 +280,14 @@ body {
     display: flex;
   }
 }
+
+/* === Build Info Timestamp === */
+.build-info {
+  position: fixed;
+  bottom: 8px;
+  right: 16px;
+  font-size: 0.70rem;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  font-family: monospace;
+}

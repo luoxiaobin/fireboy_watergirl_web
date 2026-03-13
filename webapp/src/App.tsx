@@ -7,6 +7,8 @@ import { useGameAssets } from "./hooks/useGameAssets";
 import { useGameControls } from "./hooks/useGameControls";
 import { useGameLoop } from "./hooks/useGameLoop";
 
+declare const __BUILD_DATE__: string;
+
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [engine, setEngine] = useState<GameEngine | null>(null);
@@ -165,6 +167,10 @@ function App() {
             &uarr;
           </button>
         </div>
+      </div>
+      
+      <div className="build-info">
+        Build: {typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : 'Local Dev'}
       </div>
     </div>
   );
